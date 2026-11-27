@@ -1,0 +1,38 @@
+name: Generate audiobook
+
+on:
+  workflow_dispatch:
+    inputs:
+      manuscript:
+        description: Path to a Markdown or text file in this repository
+        required: true
+        default: README.md
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  narrate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Generate MP3 with the offline voice
+        env:
+          MANUSCRIPT: ${{ inputs.manuscript }}
+        run: |
+          input=$(realpath -e -- "$MANUSCRIPT")
+          [[ "$input" == "$GITHUB_WORKSPACE/"* && -f "$input" ]]
+          dotnet run --project src/BookSayer -c Release -- "$input" "$RUNNER_TEMP/audiobook.mp3" --provider flite --cache "$RUNNER_TEMP/speech-cache"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audiobook
+          path: ${{ runner.temp }}/audiobook.mp3
+          if-no-files-found: error
