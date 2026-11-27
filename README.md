@@ -38,3 +38,9 @@ validation error. It runs without network, disk, or audio dependencies.
 The console entry point passes those segments to a cached `ISpeechProvider`.
 Both adapters return 24 kHz mono PCM, so the assembler can calculate chapter
 offsets from sample counts and encode the whole audiobook in one FFmpeg pass.
+
+## Invite-only web app
+
+Readers can upload a UTF-8 manuscript from a phone, leave while Flite narrates it,
+then sign back in to download the MP3. See the [Azure hosting and invitations guide](deploy/README.md)
+for sign-in configuration, deployment, reader limits and integration tests.

@@ -1,0 +1,32 @@
+@page
+@model BookSayer.Web.Pages.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BookSayer · My audiobooks</title>
+<style>
+*{box-sizing:border-box}body{margin:0;color:#283328;background:#faf9f4;font:1rem/1.55 "Source Sans 3",system-ui,sans-serif}
+header,main{max-width:48rem;margin:auto;padding:1.5rem}header{border-bottom:1px solid #c8cdbe;font:600 1.5rem Georgia,serif}
+h1,h2{font-family:Georgia,serif}form{display:grid;gap:.8rem;padding:1.4rem;background:#edf0e7;border-radius:.6rem}
+button{justify-self:start;background:#2c493b;color:white;border:0;padding:.8rem 1.3rem;border-radius:.4rem;font:inherit}
+ul{padding:0;list-style:none}li{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;padding:1rem 0;border-bottom:1px solid #ccd0c5}
+strong{overflow-wrap:anywhere}a{color:#28503a}input{max-width:100%}
+header{display:flex;align-items:center;justify-content:space-between}header form{display:block;background:transparent;padding:0}header button{font:1rem system-ui;background:transparent;color:#28503a;text-decoration:underline}
+</style></head><body><header>BookSayer<form method="post" asp-page-handler="SignOut"><button>Sign out</button></form></header><main>
+<h1>My audiobooks</h1>
+<form method="post" enctype="multipart/form-data" asp-antiforgery="true">
+<label for="manuscript">Choose a manuscript</label>
+<input id="manuscript" name="manuscript" type="file" accept=".md,.markdown,.txt" required aria-describedby="limits">
+<small id="limits">Markdown or plain text · 128 KiB per file · 5 uploads per day</small>
+<button type="submit">Generate audiobook</button></form>
+<h2>Library</h2>
+@if (Model.Books.Count == 0) { <p>Your audiobooks will appear here.</p> }
+else {
+<a href="/">Refresh status</a>
+<ul>@foreach (var book in Model.Books) {
+<li><strong>@book.Title</strong>
+@if (book.State == "Ready") { <a href="/audio/@book.Id">Download MP3</a> }
+else { <span>@book.State</span> }</li>
+}</ul>
+}
+</main></body></html>

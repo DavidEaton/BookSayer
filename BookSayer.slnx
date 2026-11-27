@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="src/BookSayer/BookSayer.csproj" />
+  <Project Path="src/BookSayer.Web/BookSayer.Web.csproj" />
+  <Project Path="tests/BookSayer.Web.Tests/BookSayer.Web.Tests.csproj" />
 </Solution>
