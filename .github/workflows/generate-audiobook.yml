@@ -6,7 +6,7 @@ on:
       manuscript:
         description: Path to a Markdown or text file in this repository
         required: true
-        default: README.md
+        default: functional-programming-with-csharp.md
         type: string
 
 permissions:
